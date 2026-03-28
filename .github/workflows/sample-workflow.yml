@@ -22,7 +22,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  hello:
     # The type of runner that the job will run on
     runs-on: self-hosted
 
@@ -31,5 +31,9 @@ jobs:
       # Runs a single command using the runners shell
       - name: Run a one-line script
         run: echo Hello, ${{ inputs.name }}!
+        
+  check-versions:
+    runs-on: self-hosted
+    steps:
       - name: Check node version
         run: node --version
