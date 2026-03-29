@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        PM2_HOME = "C:\\ProgramData\\Jenkins\\.pm2"
+    }
     triggers {
         pollSCM('*/1 * * * *')
     }
@@ -14,56 +17,56 @@ pipeline {
         stage('deploy-to-dev') {
             steps {
                 script {
-                    deploy("dev", 7001)
+                    deploy('dev', 7001)
                 }
             }
         }
         stage('tests-on-dev') {
             steps {
                 script {
-                    runTests("dev")
+                    runTests('dev')
                 }
             }
         }
         stage('deploy-to-stg') {
             steps {
                 script {
-                    deploy("stg", 7002)
+                    deploy('stg', 7002)
                 }
             }
         }
         stage('tests-on-stg') {
             steps {
                 script {
-                    runTests("stg")
+                    runTests('stg')
                 }
             }
         }
         stage('deploy-to-preprod') {
             steps {
                 script {
-                    deploy("preprod", 7003)
+                    deploy('preprod', 7003)
                 }
             }
         }
         stage('tests-on-preprod') {
             steps {
                 script {
-                    runTests("preprod")
+                    runTests('preprod')
                 }
             }
         }
         stage('deploy-to-prod') {
             steps {
                 script {
-                    deploy("prod", 7004)
+                    deploy('prod', 7004)
                 }
             }
         }
         stage('tests-on-prod') {
             steps {
                 script {
-                    runTests("prod")
+                    runTests('prod')
                 }
             }
         }
@@ -71,32 +74,28 @@ pipeline {
 }
 
 def installPipDeps() {
-    echo "Installing all required Python dependencies.."
-    dir('python-greetings') {
-        git branch: 'main', poll: false, url: 'https://github.com/mtararujs/python-greetings.git'
-        bat "dir"
-        bat "python -m venv venv"
-        bat "venv\\Scripts\\python.exe -m pip install -r requirements.txt"
-    }
-    echo "Dependencies successfully installed.."
+    echo 'Installing all required Python dependencies..'
+    git branch: 'main', poll: false, url: 'https://github.com/mtararujs/python-greetings.git'
+    bat 'dir'
+    bat 'python -m venv venv'
+    bat 'venv\\Scripts\\python.exe -m pip install -r requirements.txt'
+    echo 'Dependencies successfully installed..'
 }
 
 def deploy(String environment, int port) {
     echo "Deployment to ${environment} environment has started.."
-    dir('python-greetings') {
-        git branch: 'main', poll: false, url: 'https://github.com/mtararujs/python-greetings.git'
-        bat "pm2 delete greetings-app-${environment} & EXIT /B 0"
-        bat "pm2 start app.py --name greetings-app-${environment} --interpreter venv\\Scripts\\python.exe -- --port ${port}"
-    }
+    git branch: 'main', poll: false, url: 'https://github.com/mtararujs/python-greetings.git'
+    bat 'python -m venv venv'
+    bat 'venv\\Scripts\\python.exe -m pip install -r requirements.txt'
+    bat "pm2 delete greetings-app-${environment} & EXIT /B 0"
+    bat "pm2 start app.py --name greetings-app-${environment} --interpreter venv\\Scripts\\python.exe -- --port ${port}"
     echo "Deployment to ${environment} environment finished.."
 }
 
 def runTests(String environment) {
     echo "Testing greetings service on ${environment} environment has started.."
-    dir('course-js-api-framework') {
-        git branch: 'main', poll: false, url: 'https://github.com/mtararujs/course-js-api-framework.git'
-        bat "npm install"
-        bat "npm run greetings greetings_${environment}"
-    }
+    git branch: 'main', poll: false, url: 'https://github.com/mtararujs/course-js-api-framework.git'
+    bat 'npm install'
+    bat "npm run greetings greetings_${environment}"
     echo "Testing greetings service on ${environment} environment finished.."
 }
