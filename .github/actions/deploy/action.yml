@@ -26,7 +26,7 @@ runs:
       shell: cmd
     - name: Stop existing service
       working-directory: ./python-greetings
-      run: npx --yes pm2 delete greetings-app-${{ inputs.environment }} & EXIT /B 0
+      run: npx --yes pm2 describe greetings-app-${{ inputs.environment }} >NUL 2>&1 && npx --yes pm2 delete greetings-app-${{ inputs.environment }} || EXIT /B 0
       shell: cmd
     - name: Start service
       working-directory: ./python-greetings
