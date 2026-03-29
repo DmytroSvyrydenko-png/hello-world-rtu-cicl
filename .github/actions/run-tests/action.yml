@@ -8,7 +8,7 @@ runs:
   using: composite
   steps:
     - run: echo "Testing greetings service on ${{ inputs.environment }} environment has started.."
-      shell: bash
+      shell: cmd
     - uses: actions/checkout@v6
       with:
         repository: 'mtararujs/course-js-api-framework'
@@ -17,10 +17,10 @@ runs:
     - name: Install dependencies
       working-directory: ./course-js-api-framework
       run: npm install
-      shell: bash
+      shell: cmd
     - name: Run tests
       working-directory: ./course-js-api-framework
       run: npm run greetings greetings_${{ inputs.environment }}
-      shell: bash
+      shell: cmd
     - run: echo "Testing greetings service on ${{ inputs.environment }} environment finished.."
-      shell: bash
+      shell: cmd

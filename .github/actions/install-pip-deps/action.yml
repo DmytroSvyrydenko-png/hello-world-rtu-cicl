@@ -4,7 +4,7 @@ runs:
   using: composite
   steps:
     - run: echo "Installing all required Python dependencies.."
-      shell: bash
+      shell: cmd
     - uses: actions/checkout@v6
       with:
         repository: 'mtararujs/python-greetings'
@@ -13,10 +13,10 @@ runs:
     - name: Create virtual environment
       working-directory: ./python-greetings
       run: python -m venv venv
-      shell: bash
+      shell: cmd
     - name: Install dependencies
       working-directory: ./python-greetings
-      run: ./venv/Scripts/python -m pip install -r requirements.txt
-      shell: bash
+      run: venv\Scripts\python.exe -m pip install -r requirements.txt
+      shell: cmd
     - run: echo "Dependencies successfully installed.."
-      shell: bash
+      shell: cmd
