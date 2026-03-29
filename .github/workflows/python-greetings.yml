@@ -80,6 +80,7 @@ jobs:
           port: 7004
 
   tests-on-prod:
+    name: Tests-on-prod
     runs-on: self-hosted
     needs: deploy-to-prod
     steps:
