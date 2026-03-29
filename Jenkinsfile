@@ -88,7 +88,7 @@ def deploy(String environment, int port) {
     bat 'python -m venv venv'
     bat 'venv\\Scripts\\python.exe -m pip install -r requirements.txt'
     bat "pm2 delete greetings-app-${environment} & EXIT /B 0"
-    bat "pm2 start app.py --name greetings-app-${environment} --interpreter venv\\Scripts\\python.exe -- --port ${port}"
+    bat "pm2 start app.py --name greetings-app-${environment} --interpreter \"${env.WORKSPACE}\\venv\\Scripts\\python.exe\" -- --port ${port}"
     echo "Deployment to ${environment} environment finished.."
 }
 
